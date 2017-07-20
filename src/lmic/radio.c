@@ -117,7 +117,8 @@
 // #define RegAgcThresh3                              0x46 // common
 // #define RegPllHop                                  0x4B // common
 // #define RegTcxo                                    0x58 // common
-#define RegPaDac                                   0x4D // common
+#define SX1276_RegPaDac                                0x4D // common
+#define SX1272_RegPaDac                                0x5A // common
 // #define RegPll                                     0x5C // common
 // #define RegPllLowPn                                0x5E // common
 // #define RegFormerTemp                              0x6C // common
@@ -400,27 +401,25 @@ static void configPower () {
 #ifdef CFG_sx1276_radio
     // no boost used for now
     s1_t pw = (s1_t)LMIC.txpow;
-    if(pw >= 17) {
-        pw = 15;
+    if(pw >= 14) {
+        pw = 14;
     } else if(pw < 2) {
         pw = 2;
     }
     // check board type for BOOST pin
-	writeReg(RegPaDac, 0x84);
-    writeReg(RegPaConfig, (u1_t)((pw&0xf)));// Don't set HP Output(0x80|(pw&0xf)));
+	writeReg(SX1276_RegPaDac, 0x84);
+    writeReg(RegPaConfig, (u1_t)((pw&0xf)));// Don't set HPow Output(0x80|(pw&0xf)));
 	
 
 #elif CFG_sx1272_radio
     // set PA config (2-17 dBm using PA_BOOST)
     s1_t pw = (s1_t)LMIC.txpow;
-    if(pw > 17) {
-        pw = 17;
+    if(pw > 13) {
+        pw = 13;
     } else if(pw < 2) {
         pw = 2;
     }
-    writeReg(RegPaConfig, (u1_t)(0x80|(pw-2)));
-	ASSERT(readReg(RegPaConfig) == (0x80|(pw-2)));
-	ASSERT(readReg(RegPaDac) == 0x84);
+    writeReg(RegPaConfig, (u1_t)((pw+1)));
 	
 	
 #else

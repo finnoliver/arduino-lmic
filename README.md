@@ -1,5 +1,13 @@
-Arduino-LMIC library
-====================
+
+Changes from original LMIC 1.5
+-------------------------------
+o Modified driver, so that a Semtech mBed Lora Shield SX1272/SX1276 could be used with an Arduino M0/Due
+ - Disabled PA_BOOST Pin in Radio.c and use HFO instead
+ - Fitted P_out limits regarding the changes
+ 
+Arduino-LMIC library modified
+==============================
+
 This repository contains the IBM LMIC (LoraMAC-in-C) library, slightly
 modified to run in the Arduino environment, allowing using the SX1272,
 SX1276 tranceivers and compatible modules (such as some HopeRF RFM9x
